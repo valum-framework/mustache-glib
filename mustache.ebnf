@@ -1,0 +1,21 @@
+(*
+ * ENBF for the Mustache logic-less template language.
+ *
+ * It is designed to facilitate streaming.
+ *
+ *)
+
+template         = { block };
+block            = text | tag;
+tag              = open, (variable | unescaped | section | inverted_section | comment | partial | set_delimiter), close;
+variable         = key | ("{", key, "}") | ("&", key); (* escaped or unescaped for the two last cases *)
+section          = "#", key, ["?"], close, template, open, "/", key;
+inverted_section = "^", close, key, ["?"], open, key;
+comment          = "!", text;
+partial          = ">", key;
+set_delimiter    = "=", delimiter, " ", delimiter, "=";
+open             = "{{"; (* could be redefined while lexing *)
+close            = "}}"; (* could be redefined while lexing *)
+delimiter        = ? valid delimiter ?;
+key              = ? valid key ?;
+text             = ? anything that does not conflict with open or close ?;

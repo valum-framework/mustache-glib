@@ -1,6 +1,27 @@
 mustache-glib
 =============
 
+Logic-less templates for people using GLib.
+
+## Usage
+
+```vala
+using Mustache;
+using Json;
+
+var context = new FileContext (File.new_for_path ("templates"));
+var template = new Parser (new Lexer (context.read_partial ("index.html.mustache"))).template ();
+
+var env = new Json.Node ();
+env.set_object (new Json.Object ());
+
+template.to_stream (@out, env);
+```
+
+## Implementation Reference
+
+This is still a work-in-progress, so here's the implementation reference:
+
 The reference document is here: https://mustache.github.io/mustache.5.html
 
 The lexer can be implemented using
